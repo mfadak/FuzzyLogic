@@ -1,0 +1,82 @@
+FUNCTION_BLOCK Model
+
+VAR_INPUT
+    discreteMath  : REAL;
+    conceptOfProgLang : REAL;
+    artificialIntel : REAL;
+END_VAR
+
+VAR_OUTPUT
+    FuzzyLogicANN : REAL;
+END_VAR
+
+FUZZIFY discreteMath
+    TERM fail := (0, 1)(2, 0);
+    TERM moderate  := (1,0)(2,1)(3,0);
+    TERM success := (2,0)(3,1)(4,1);
+END_FUZZIFY
+
+FUZZIFY conceptOfProgLang
+    TERM fail := (0, 1)(2, 0);
+    TERM moderate  := (1,0)(2,1)(3,0);
+    TERM success := (2,0)(3,1)(4,1);
+END_FUZZIFY
+
+FUZZIFY artificialIntel
+    TERM fail := (0, 1)(2, 0);
+    TERM moderate  := (1,0)(2,1)(3,0);
+    TERM success := (2,0)(3,1)(4,1);
+END_FUZZIFY
+
+DEFUZZIFY FuzzyLogicANN
+    TERM FF := (0,1)(0.5,0);
+    TERM FD := (0,0)(0.5,1)(1,0);
+    TERM DD := (0.5,0)(1,1)(1.5,0);
+    TERM DC := (1,0)(1.5,1)(2,0);
+    TERM CC := (1.5,0)(2,1)(2.5,0);
+    TERM CB := (2,0)(2.5,1)(3,0);
+    TERM BB := (2.5,0)(3,1)(3.5,0);
+    TERM BA := (3,0)(3.5,1)(4,0);
+    TERM AA := (3.5,0)(4,1);
+    METHOD : COA;    
+    DEFAULT := 2;   
+END_DEFUZZIFY
+
+RULEBLOCK kuralblok1
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 1 : IF discreteMath IS fail AND conceptOfProgLang IS fail AND artificialIntel IS fail THEN FuzzyLogicANN IS FF;
+	RULE 2 : IF discreteMath IS fail AND conceptOfProgLang IS fail AND artificialIntel IS moderate THEN FuzzyLogicANN IS FD;
+	RULE 3 : IF discreteMath IS fail AND conceptOfProgLang IS fail AND artificialIntel IS success THEN FuzzyLogicANN IS DC;
+	RULE 4 : IF discreteMath IS fail AND conceptOfProgLang IS moderate AND artificialIntel IS fail THEN FuzzyLogicANN IS DD;
+	RULE 5 : IF discreteMath IS fail AND conceptOfProgLang IS moderate AND artificialIntel IS moderate THEN FuzzyLogicANN IS CC;
+	RULE 6 : IF discreteMath IS fail AND conceptOfProgLang IS moderate AND artificialIntel IS success THEN FuzzyLogicANN IS CB;
+	RULE 7 : IF discreteMath IS fail AND conceptOfProgLang IS success AND artificialIntel IS fail THEN FuzzyLogicANN IS DC;
+	RULE 8 : IF discreteMath IS fail AND conceptOfProgLang IS success AND artificialIntel IS moderate THEN FuzzyLogicANN IS CB;
+	RULE 9 : IF discreteMath IS fail AND conceptOfProgLang IS success AND artificialIntel IS success THEN FuzzyLogicANN IS BB;
+	RULE 10 : IF discreteMath IS moderate AND conceptOfProgLang IS fail AND artificialIntel IS fail THEN FuzzyLogicANN IS DC;
+	RULE 11 : IF discreteMath IS moderate AND conceptOfProgLang IS fail AND artificialIntel IS moderate THEN FuzzyLogicANN IS CB;
+	RULE 12 : IF discreteMath IS moderate AND conceptOfProgLang IS fail AND artificialIntel IS success THEN FuzzyLogicANN IS BB;
+	RULE 13 : IF discreteMath IS moderate AND conceptOfProgLang IS moderate AND artificialIntel IS fail THEN FuzzyLogicANN IS DC;
+	RULE 14 : IF discreteMath IS moderate AND conceptOfProgLang IS moderate AND artificialIntel IS moderate THEN FuzzyLogicANN IS CB;
+	RULE 15 : IF discreteMath IS moderate AND conceptOfProgLang IS moderate AND artificialIntel IS success THEN FuzzyLogicANN IS BA;
+	RULE 16 : IF discreteMath IS moderate AND conceptOfProgLang IS success AND artificialIntel IS fail THEN FuzzyLogicANN IS CB;
+	RULE 17 : IF discreteMath IS moderate AND conceptOfProgLang IS success AND artificialIntel IS moderate THEN FuzzyLogicANN IS BB;
+	RULE 18 : IF discreteMath IS moderate AND conceptOfProgLang IS success AND artificialIntel IS success THEN FuzzyLogicANN IS AA;
+	RULE 19 : IF discreteMath IS success AND conceptOfProgLang IS fail AND artificialIntel IS fail THEN FuzzyLogicANN IS CC;
+	RULE 20 : IF discreteMath IS success AND conceptOfProgLang IS fail AND artificialIntel IS moderate THEN FuzzyLogicANN IS BB;
+	RULE 21 : IF discreteMath IS success AND conceptOfProgLang IS fail AND artificialIntel IS success THEN FuzzyLogicANN IS BA;
+	RULE 22 : IF discreteMath IS success AND conceptOfProgLang IS moderate AND artificialIntel IS fail THEN FuzzyLogicANN IS CB;
+	RULE 23 : IF discreteMath IS success AND conceptOfProgLang IS moderate AND artificialIntel IS moderate THEN FuzzyLogicANN IS BB;
+	RULE 24 : IF discreteMath IS success AND conceptOfProgLang IS moderate AND artificialIntel IS success THEN FuzzyLogicANN IS AA;
+	RULE 25 : IF discreteMath IS success AND conceptOfProgLang IS success AND artificialIntel IS fail THEN FuzzyLogicANN IS BB;
+	RULE 26 : IF discreteMath IS success AND conceptOfProgLang IS success AND artificialIntel IS moderate THEN FuzzyLogicANN IS AA;
+	RULE 27 : IF discreteMath IS success AND conceptOfProgLang IS success AND artificialIntel IS success THEN FuzzyLogicANN IS AA;
+	
+END_RULEBLOCK
+
+
+
+END_FUNCTION_BLOCK
