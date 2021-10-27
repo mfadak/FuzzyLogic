@@ -1,0 +1,50 @@
+FUNCTION_BLOCK WashingMachine
+
+VAR_INPUT
+    dirtyRate  : REAL;
+    laundryType   : REAL;
+END_VAR
+
+VAR_OUTPUT
+    washingTime : REAL;
+END_VAR
+
+FUZZIFY dirtyRate
+    TERM slight := (0, 1) (50, 0);
+    TERM medium  := (0,0) (50,1) (90,0);
+    TERM high := trape 60 80 100 100;
+END_FUZZIFY
+
+FUZZIFY laundryType
+    TERM delicate := (0, 1) (50, 0);
+    TERM mixed  := (0,0) (50,1) (90,0);
+    TERM white := trape 60 80 100 100;
+END_FUZZIFY
+
+DEFUZZIFY washingTime
+    TERM veryShort := trape 0 0 15 30;
+    TERM short := trian 20 40 60;
+    TERM regular := (40,0) (60,1) (90,0);
+    TERM long := (60,0) (90,1) (100,0);
+    TERM veryLong := trape 90 100 145 145;
+    METHOD : COG;    
+    DEFAULT := 90; 
+END_DEFUZZIFY
+
+RULEBLOCK ruleBlock1
+	AND : MIN;	
+	ACT : MIN;	
+	ACCU : MAX;	
+
+	RULE 1 : IF dirtyRate IS slight AND laundryType IS delicate THEN washingTime IS veryShort;
+	RULE 2 : IF dirtyRate IS slight AND laundryType IS mixed THEN washingTime IS short;
+	RULE 3 : IF dirtyRate IS slight AND laundryType IS white THEN washingTime IS regular;
+    RULE 4 : IF dirtyRate IS medium AND laundryType IS delicate THEN washingTime IS short;
+    RULE 5 : IF dirtyRate IS medium AND laundryType IS mixed THEN washingTime IS regular;
+    RULE 6 : IF dirtyRate IS medium AND laundryType IS white THEN washingTime IS long;
+    RULE 7 : IF dirtyRate IS high AND laundryType IS delicate THEN washingTime IS regular;
+    RULE 8 : IF dirtyRate IS high AND laundryType IS mixed THEN washingTime IS long;
+    RULE 9 : IF dirtyRate IS high AND laundryType IS white THEN washingTime IS veryLong;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
