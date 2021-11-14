@@ -12,21 +12,21 @@ END_VAR
 FUZZIFY dirtyRate
     TERM slight := (0, 1) (50, 0);
     TERM medium  := (0,0) (50,1) (90,0);
-    TERM high := trape 60 80 100 100;
+    TERM high := TRAPE 60 80 100 100;
 END_FUZZIFY
 
 FUZZIFY laundryType
     TERM delicate := (0, 1) (50, 0);
     TERM mixed  := (0,0) (50,1) (90,0);
-    TERM white := trape 60 80 100 100;
+    TERM white := TRAPE 60 80 100 100;
 END_FUZZIFY
 
 DEFUZZIFY washingTime
-    TERM veryShort := trape 0 0 15 30;
-    TERM short := trian 20 40 60;
+    TERM veryShort := TRAPE 0 0 15 30;
+    TERM short := TRIAN 20 40 60;
     TERM regular := (40,0) (60,1) (90,0);
     TERM long := (60,0) (90,1) (100,0);
-    TERM veryLong := trape 90 100 145 145;
+    TERM veryLong := TRAPE 90 100 145 145;
     METHOD : COG;    
     DEFAULT := 90; 
 END_DEFUZZIFY
